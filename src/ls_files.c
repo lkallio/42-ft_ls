@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ls_files.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: broccoli <broccoli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lkallio <lkallio@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/25 13:30:45 by broccoli          #+#    #+#             */
-/*   Updated: 2020/08/25 13:32:19 by broccoli         ###   ########.fr       */
+/*   Updated: 2021/05/21 15:57:50 by lkallio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ static void	ls_initfile(t_ls_file **files, char *file_name, char *dir_name)
 	if (!((*files)->file_name = ls_indentjoin(dir_name, "/", file_name,
 			0)))
 		exit(0);
+	(*files)->col_width = 1;
 }
 
 t_ls_file	*ls_getfiles(char *dir_name, int *total, short *col_width)
@@ -74,7 +75,7 @@ t_ls_file	*ls_getfiles(char *dir_name, int *total, short *col_width)
 	if (!(dirp = opendir(dir_name)) && ls_check_error(dir_name, 1))
 		return (0);
 	!(head = (t_ls_file *)ft_new(sizeof(t_ls_file))) ? exit(0) : 0;
-	*head = (t_ls_file){.dt = 1};
+	*head = (t_ls_file){.dt = 1, .col_width = 1};
 	while ((dirent = readdir(dirp)) || ls_check_error(0, 0))
 	{
 		if ((i + 1 < 0 && i++) || (dirent->d_name[0] == '.' &&
@@ -106,6 +107,7 @@ t_ls_file	*ft_ls(char **dir_names)
 		if (lstat(*dir_names, &file->stat) == -1 ||
 				!S_ISDIR(file->stat.st_mode))
 			ls_check_error(*dir_names, 1);
+		file->col_width = 1;
 		file->files = ls_getfiles(*dir_names,
 				&file->file_count,
 				&file->col_width);

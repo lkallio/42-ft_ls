@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ls_print.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: broccoli <broccoli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lkallio <lkallio@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 17:55:07 by broccoli          #+#    #+#             */
-/*   Updated: 2020/08/25 13:34:57 by broccoli         ###   ########.fr       */
+/*   Updated: 2021/05/21 16:00:25 by lkallio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ void				ls_dirprint(t_ls_file *files, int is_rec)
 {
 	int		i;
 
+	if (!files)
+		return;
 	i = 1;
 	if (S_ISDIR(files->stat.st_mode) && !(files->dt & 0b1010) &&
 			((files->dt & 4) || ls_glob()->options & 1))
